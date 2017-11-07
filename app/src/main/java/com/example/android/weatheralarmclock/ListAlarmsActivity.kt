@@ -2,6 +2,7 @@ package com.example.android.weatheralarmclock
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -23,8 +24,21 @@ class ListAlarmsActivity : AppCompatActivity() {
 
         alarms_list_view.adapter = AlarmAdapter(alarms, this)
         alarms_list_view.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(this,"Item ${position + 1} [id=$id]was clicked", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Item ${position + 1} [id=$id] was clicked", Toast.LENGTH_SHORT).show()
             editItem(position)
+        }
+
+        button_send_mail.setOnClickListener {
+            val sendIntent = Intent(Intent.ACTION_SEND)
+            sendIntent.type = "message/rfc822"
+            sendIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("cristian.danciu.01@gmail.com"))
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Alarm app test")
+            sendIntent.putExtra(Intent.EXTRA_TEXT, text_send_mail.text)
+            try {
+                startActivity(Intent.createChooser(sendIntent, "Send Email"))
+            } catch (ex: android.content.ActivityNotFoundException) {
+                Toast.makeText(this, "Couldn't find any email clients", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -55,6 +69,7 @@ class ListAlarmsActivity : AppCompatActivity() {
 
             view.findViewById<TextView>(R.id.text_index).text = (position + 1).toString()
             view.findViewById<TextView>(R.id.text_time).text = getItem(position).time
+            view.findViewById<TextView>(R.id.text_label).text = getItem(position).label
 
             return view
         }
