@@ -2,7 +2,6 @@ package com.example.android.weatheralarmclock
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -12,64 +11,55 @@ import com.example.android.weatheralarmclock.model.Alarm
 import kotlinx.android.synthetic.main.activity_list_alarms.*
 
 class ListAlarmsActivity : AppCompatActivity() {
-    private var alarms = listOf(
-            Alarm("11:00", "Alarm 1"),
-            Alarm("11:06", "Alarm 2"),
-            Alarm("13:06", "Alarm 3")
-    )
+    private var alarms: MutableList<Alarm> = listOf(
+            Alarm("11:00", "Alarm 1", active = true),
+            Alarm("11:06", "Alarm 2", active = false),
+            Alarm("13:06", "Alarm 3", active = true)
+    ).toMutableList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_alarms)
 
-        alarms_list_view.adapter = AlarmAdapter(alarms, this)
-        alarms_list_view.setOnItemClickListener { parent, view, position, id ->
-            Toast.makeText(this, "Item ${position + 1} [id=$id] was clicked", Toast.LENGTH_SHORT).show()
-            editItem(position)
-        }
-
-        button_send_mail.setOnClickListener {
-            val sendIntent = Intent(Intent.ACTION_SEND)
-            sendIntent.type = "message/rfc822"
-            sendIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("cristian.danciu.01@gmail.com"))
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Alarm app test")
-            sendIntent.putExtra(Intent.EXTRA_TEXT, text_send_mail.text)
-            try {
-                startActivity(Intent.createChooser(sendIntent, "Send Email"))
-            } catch (ex: android.content.ActivityNotFoundException) {
-                Toast.makeText(this, "Couldn't find any email clients", Toast.LENGTH_SHORT).show()
-            }
-        }
+        list_view_alarms.adapter = AlarmAdapter(alarms, this)
     }
 
-    private fun editItem(position: Int) {
-        val dialog = Dialog(this)
-        dialog.setTitle("Input Box")
-        dialog.setContentView(R.layout.edit_alarm)
-
-        val editTextTime = dialog.findViewById<EditText>(R.id.text_edit_time)
-        val editTextLabel = dialog.findViewById<EditText>(R.id.text_edit_label)
-        editTextTime.setText(alarms[position].time)
-        editTextLabel.setText(alarms[position].label)
-
-        dialog.findViewById<Button>(R.id.button_cancel).setOnClickListener { dialog.dismiss() }
-        dialog.findViewById<Button>(R.id.button_save).setOnClickListener {
-            alarms[position].time = editTextTime.text.toString()
-            alarms[position].label = editTextLabel.text.toString()
-            (alarms_list_view.adapter as AlarmAdapter).notifyDataSetChanged()
-            dialog.dismiss()
-        }
-
-        dialog.show()
-    }
-
-    private class AlarmAdapter(var alarms: List<Alarm>, var activity: Activity) : BaseAdapter() {
+    private class AlarmAdapter(var alarms: MutableList<Alarm>, var activity: Activity) : BaseAdapter() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            val view = convertView ?: View.inflate(activity, R.layout.alarm_item, null)
+            val view = convertView ?: inflateNewAlarmView(position, activity, R.layout.alarm_item, null)
 
-            view.findViewById<TextView>(R.id.text_index).text = (position + 1).toString()
-            view.findViewById<TextView>(R.id.text_time).text = getItem(position).time
-            view.findViewById<TextView>(R.id.text_label).text = getItem(position).label
+            val isAlarmActive = getItem(position).active
+            val activeAlarmTimeTextView = view.findViewById<TextView>(R.id.text_time_active)
+            val inactiveAlarmTimeTextView = view.findViewById<TextView>(R.id.text_time_inactive)
+
+            // Display alarm time in it's own active/inactive text view
+            if (isAlarmActive) {
+                activeAlarmTimeTextView.text = getItem(position).time
+                activeAlarmTimeTextView.visibility = View.VISIBLE
+                inactiveAlarmTimeTextView.visibility = View.GONE
+            } else {
+                inactiveAlarmTimeTextView.text = getItem(position).time
+                inactiveAlarmTimeTextView.visibility = View.VISIBLE
+                activeAlarmTimeTextView.visibility = View.GONE
+            }
+
+            // Handle alarm label
+            val labelTextView = view.findViewById<TextView>(R.id.text_label)
+            val labelText = getItem(position).label
+            if (labelText == "") {
+                labelTextView.visibility = View.GONE
+            } else {
+                labelTextView.text = labelText
+                labelTextView.visibility = View.VISIBLE
+            }
+
+            // Handle alarm on/off switch
+            val alarmSwitch = view.findViewById<Switch>(R.id.switch_alarm)
+            alarmSwitch.isChecked = isAlarmActive
+            alarmSwitch.setOnClickListener { toggleAlarmActive(position) }
+
+            // Handle remove alarm button
+            view.findViewById<Button>(R.id.button_delete_alarm).setOnClickListener { deleteAlarm(position) }
 
             return view
         }
@@ -79,7 +69,44 @@ class ListAlarmsActivity : AppCompatActivity() {
         override fun getItemId(position: Int): Long = position.toLong()
 
         override fun getCount(): Int = alarms.size
-    }
 
+        private fun inflateNewAlarmView(position: Int, activity: Activity, layoutId: Int, root: ViewGroup?): View {
+            val newAlarmView = View.inflate(activity, layoutId, root)
+            newAlarmView.findViewById<LinearLayout>(R.id.edit_alarm_linear_layout)
+                    .setOnClickListener { editAlarm(position) }
+
+            return newAlarmView
+        }
+
+        private fun deleteAlarm(position: Int) {
+            alarms.removeAt(position)
+            notifyDataSetChanged()
+        }
+
+        private fun toggleAlarmActive(position: Int) {
+            alarms[position].active = !alarms[position].active
+            notifyDataSetChanged()
+        }
+
+        private fun editAlarm(position: Int) {
+            val dialog = Dialog(this.activity)
+            dialog.setContentView(R.layout.edit_alarm)
+
+            val editTextTime = dialog.findViewById<EditText>(R.id.text_edit_time)
+            val editTextLabel = dialog.findViewById<EditText>(R.id.text_edit_label)
+            editTextTime.setText(alarms[position].time)
+            editTextLabel.setText(alarms[position].label)
+
+            dialog.findViewById<Button>(R.id.button_cancel).setOnClickListener { dialog.dismiss() }
+            dialog.findViewById<Button>(R.id.button_save).setOnClickListener {
+                alarms[position].time = editTextTime.text.toString()
+                alarms[position].label = editTextLabel.text.toString()
+                notifyDataSetChanged()
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
 
 }
