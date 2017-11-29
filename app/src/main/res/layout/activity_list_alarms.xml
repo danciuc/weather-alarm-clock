@@ -2,14 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.android.weatheralarmclock.ListAlarmsActivity">
 
     <ListView
         android:id="@+id/list_view_alarms"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false" />
+
+    <TextView
+        android:id="@+id/text_view_empty_list"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:text="@string/no_alarms_found"
+        android:textColor="@color/colorTextDark"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        style="?android:attr/buttonBarStyle"
+        android:orientation="horizontal">
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button_add_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/add_alarm" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/button_goto_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/weather" />
+    </LinearLayout>
+
 
 </LinearLayout>

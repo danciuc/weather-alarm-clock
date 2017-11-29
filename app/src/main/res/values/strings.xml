@@ -4,7 +4,10 @@
     <string name="switch_alarm">Switch Alarm</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
-    <string name="time">Time</string>
     <string name="label">Label</string>
     <string name="x">X</string>
+    <string name="no_alarms_found">No alarms found</string>
+    <string name="add_alarm">Add alarm</string>
+    <string name="weather">Weather</string>
+    <string name="time_separator">:</string>
 </resources>
