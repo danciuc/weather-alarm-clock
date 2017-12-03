@@ -179,7 +179,7 @@ class ListAlarmsActivity : AppCompatActivity() {
         }
 
         private fun deleteAlarm(position: Int) {
-            alarmViewModel.deleteAlarm(position)
+            alarmViewModel.deleteAlarm(getItem(position))
         }
 
         private fun toggleAlarmActive(position: Int) {

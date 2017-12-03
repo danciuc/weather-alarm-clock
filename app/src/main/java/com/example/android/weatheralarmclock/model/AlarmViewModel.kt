@@ -29,8 +29,8 @@ class AlarmViewModel(application: Application) : AndroidViewModel(application) {
         db.alarmDao().insertAlarm(alarm)
     }
 
-    fun deleteAlarm(position: Int) {
-        db.alarmDao().deleteAlarm(alarms!!.value!![position])
+    fun deleteAlarm(alarm: Alarm) {
+        db.alarmDao().deleteAlarm(alarm)
     }
 
     fun updateAlarm(alarm: Alarm) {
