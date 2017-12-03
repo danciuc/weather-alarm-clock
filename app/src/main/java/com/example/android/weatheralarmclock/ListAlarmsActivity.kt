@@ -3,32 +3,38 @@ package com.example.android.weatheralarmclock
 import android.app.Activity
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.android.weatheralarmclock.model.Alarm
+import com.example.android.weatheralarmclock.model.AlarmViewModel
 import com.example.android.weatheralarmclock.model.toTimeUnitString
 import kotlinx.android.synthetic.main.activity_list_alarms.*
 import java.util.*
 
-class ListAlarmsActivity : AppCompatActivity() {
-    private var alarms: MutableList<Alarm> = listOf(
-            Alarm(11, 0, "Alarm 1", active = true),
-            Alarm(11, 6, "Alarm 2", active = false),
-            Alarm(13, 6, "Alarm 3", active = true)
-    ).toMutableList()
 
+class ListAlarmsActivity : AppCompatActivity() {
     private lateinit var alarmAdapter: AlarmAdapter
+    private lateinit var alarmViewModel: AlarmViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_list_alarms)
 
-        this.alarmAdapter = AlarmAdapter(alarms, this)
-        list_view_alarms.adapter = this.alarmAdapter
-        list_view_alarms.emptyView = text_view_empty_list
+        alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel::class.java)
+
+        alarmViewModel.alarms?.observe(this, Observer { alarms ->
+            if (alarms != null) {
+                this.alarmAdapter = AlarmAdapter(alarms, this, alarmViewModel)
+                list_view_alarms.adapter = this.alarmAdapter
+                list_view_alarms.emptyView = text_view_empty_list
+            }
+        })
 
         button_add_alarm.setOnClickListener { editAlarm() }
     }
@@ -36,13 +42,15 @@ class ListAlarmsActivity : AppCompatActivity() {
     private fun editAlarm(position: Int? = null) {
         val editAlarmDialog = Dialog(this)
         editAlarmDialog.setContentView(R.layout.edit_alarm)
+
         if (position != null) {
+            val alarm = alarmViewModel.alarms!!.value!![position]
             editAlarmDialog.findViewById<TextView>(R.id.text_edit_time_hour)
-                    .text = alarms[position].hour.toString()
+                    .text = alarm.hour.toString()
             editAlarmDialog.findViewById<TextView>(R.id.text_edit_time_minute)
-                    .text = alarms[position].minute.toTimeUnitString()
+                    .text = alarm.minute.toTimeUnitString()
             editAlarmDialog.findViewById<EditText>(R.id.text_edit_alarm_label)
-                    .setText(alarms[position].label)
+                    .setText(alarm.label)
         }
 
         val (defaultDialogHour, defaultDialogMinute) = getDialogTime(editAlarmDialog)
@@ -87,30 +95,17 @@ class ListAlarmsActivity : AppCompatActivity() {
                 true
         )
 
-        // Check if there is another alarm set for the input time
-        val notNullPosition = position ?: -1 // so it can be compared with the index inside filter
-        val existingAlarms = alarms.filterIndexed { index, filterAlarm ->
-            notNullPosition != index
-                    && filterAlarm.hour == alarm.hour
-                    && filterAlarm.minute == alarm.minute
-        }
-
-        if (existingAlarms.isNotEmpty()) {
+        if (alarmViewModel.isAlarmAlreadySet(alarm, position)) {
             Toast.makeText(
                     this,
                     "An alarm set for ${alarm.hour}:${alarm.minute.toTimeUnitString()} already exist!",
                     Toast.LENGTH_SHORT
             ).show()
+
             return false
         }
 
-        // The new alarm is valid, so save it and notify the adapter
-        when (position) {
-            null -> alarms.add(alarm)
-            else -> alarms[position] = alarm
-        }
-
-        alarmAdapter.notifyDataSetChanged()
+        alarmViewModel.saveAlarm(alarm)
 
         return true
     }
@@ -128,7 +123,7 @@ class ListAlarmsActivity : AppCompatActivity() {
         }
     }
 
-    private class AlarmAdapter(var alarms: MutableList<Alarm>, var activity: Activity) : BaseAdapter() {
+    private class AlarmAdapter(var alarms: List<Alarm>, var activity: Activity, var alarmViewModel: AlarmViewModel) : BaseAdapter() {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             val view = convertView ?: inflateNewAlarmView(position, activity, R.layout.alarm_item, null)
 
@@ -184,13 +179,13 @@ class ListAlarmsActivity : AppCompatActivity() {
         }
 
         private fun deleteAlarm(position: Int) {
-            alarms.removeAt(position)
-            notifyDataSetChanged()
+            alarmViewModel.deleteAlarm(position)
         }
 
         private fun toggleAlarmActive(position: Int) {
-            alarms[position].active = !alarms[position].active
-            notifyDataSetChanged()
+            val alarm = getItem(position)
+            alarm.active = !alarm.active
+            alarmViewModel.updateAlarm(alarm)
         }
     }
 
