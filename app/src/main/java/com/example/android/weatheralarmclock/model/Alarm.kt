@@ -5,14 +5,15 @@ import android.arch.persistence.room.*
 
 
 @Entity(
-        tableName = "alarms",
-        primaryKeys = ["hour", "minute"]
+        tableName = "alarms"
 )
 data class Alarm(
         var hour: Int,
         var minute: Int,
         var label: String = "",
-        var active: Boolean = true
+        var active: Boolean = true,
+        @PrimaryKey(autoGenerate = true)
+        var id: Int = 0
 )
 
 fun Int.toTimeUnitString(): String = if (this <= 9) "0" + this else this.toString()
@@ -30,9 +31,4 @@ interface AlarmDao {
 
     @Query("SELECT * FROM alarms")
     fun loadAlarms(): LiveData<List<Alarm>>
-
-    @Query("SELECT * FROM alarms " +
-            "WHERE hour = :hour " +
-            "AND minute = :minute ")
-    fun getAlarm(hour: Int, minute: Int): Alarm
 }

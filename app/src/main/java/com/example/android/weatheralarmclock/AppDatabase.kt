@@ -9,7 +9,7 @@ import com.example.android.weatheralarmclock.model.AlarmDao
 
 @Database(
         entities = [Alarm::class],
-        version = 1,
+        version = 2,
         exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -26,7 +26,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DATABASE_NAME
-            ).allowMainThreadQueries().build()
+            ).fallbackToDestructiveMigration()
+                    .allowMainThreadQueries()
+                    .build()
         }
     }
 }

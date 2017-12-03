@@ -25,7 +25,7 @@ class AlarmViewModel(application: Application) : AndroidViewModel(application) {
         }.isNotEmpty()
     }
 
-    fun saveAlarm(alarm: Alarm) {
+    fun insertAlarm(alarm: Alarm) {
         db.alarmDao().insertAlarm(alarm)
     }
 
