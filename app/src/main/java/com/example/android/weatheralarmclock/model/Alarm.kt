@@ -5,7 +5,10 @@ import android.arch.persistence.room.*
 
 
 @Entity(
-        tableName = "alarms"
+        tableName = "alarms",
+        indices = [
+            Index(value = ["hour", "minute"], unique = true)
+        ]
 )
 data class Alarm(
         var hour: Int,

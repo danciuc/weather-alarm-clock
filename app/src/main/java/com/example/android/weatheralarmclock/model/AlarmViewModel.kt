@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import com.example.android.weatheralarmclock.AppDatabase
 
-
 class AlarmViewModel(application: Application) : AndroidViewModel(application) {
 
     private var db: AppDatabase = AppDatabase.getInstance(this.getApplication())

@@ -2,7 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.weatheralarmclock">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Internet access -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- SyncAdapter, AccountManager and SyncSettings -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
 
     <application
         android:allowBackup="true"
@@ -11,23 +21,48 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--<activity-->
-            <!--android:name=".SetAlarmActivity"-->
-            <!--android:label="@string/title_activity_set_alarm"-->
-            <!--android:theme="@style/AppTheme.NoActionBar">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
         <activity android:name=".ListAlarmsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".WeatherActivity"
+            android:label="@string/weather_activity_title"
+            android:parentActivityName=".ListAlarmsActivity" />
+
+        <provider
+            android:name=".syncadapter.DummyProvider"
+            android:authorities="com.example.android"
+            android:exported="false"
+            android:label="DummyProvider"
+            android:syncable="true" />
+
+        <service
+            android:name=".account.AuthenticatorService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <service
+            android:name=".syncadapter.SyncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
     </application>
 
 </manifest>
