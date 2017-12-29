@@ -22,7 +22,17 @@ data class Weather(
         var lastSync: Date = Date(),
         @PrimaryKey(autoGenerate = true)
         var id: Int = 0
-)
+) {
+    fun getWeatherTime(): Pair<Int, Int> {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = forecastTime * 1000
+
+        return Pair(
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE)
+        )
+    }
+}
 
 @Dao
 @TypeConverters(DateConverter::class)

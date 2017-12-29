@@ -12,4 +12,5 @@
     <string name="time_separator">:</string>
     <string name="weather_activity_title">Weather Forecast</string>
     <string name="sync_now">Sync Now</string>
+    <string name="no_records">No records</string>
 </resources>
