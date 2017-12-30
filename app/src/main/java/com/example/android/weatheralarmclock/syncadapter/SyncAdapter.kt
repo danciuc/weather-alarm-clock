@@ -4,6 +4,7 @@ import android.accounts.Account
 import android.content.*
 import android.os.Bundle
 import android.util.Log
+import com.example.android.weatheralarmclock.AppDatabase
 import com.example.android.weatheralarmclock.account.AccountGeneral
 import com.example.android.weatheralarmclock.util.Webservice
 import java.io.IOException
@@ -30,7 +31,8 @@ class SyncAdapter @JvmOverloads constructor(context: Context, autoInit: Boolean,
 
     @Throws(IOException::class)
     private fun syncWeather() {
-        Webservice(context).downloadWeatherForecast()
+        val db = AppDatabase.getInstance(context)
+        Webservice(db).downloadWeatherForecast()
     }
 
     companion object {

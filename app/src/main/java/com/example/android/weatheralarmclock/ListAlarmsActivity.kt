@@ -48,7 +48,6 @@ class ListAlarmsActivity : AppCompatActivity() {
 
     private fun addAlarmsObserver() {
         alarmViewModel.alarms?.observe(this, Observer { alarms ->
-            Log.w("ALARMS ACTIVITY", "In observer")
             if (alarms != null) {
                 this.alarmAdapter = AlarmAdapter(alarms, this, alarmViewModel)
                 list_view_alarms.adapter = this.alarmAdapter

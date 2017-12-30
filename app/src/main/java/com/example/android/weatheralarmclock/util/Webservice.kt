@@ -1,18 +1,17 @@
 package com.example.android.weatheralarmclock.util
 
-import android.content.Context
 import android.util.Log
 import com.example.android.weatheralarmclock.AppDatabase
 import com.example.android.weatheralarmclock.model.Weather
 import com.example.android.weatheralarmclock.model.WeatherDao
 import okhttp3.*
 import java.io.IOException
+import java.util.*
 
 
-class Webservice(context: Context) {
+class Webservice(private val db: AppDatabase) {
 
     private val client: OkHttpClient = OkHttpClient()
-    private val db: AppDatabase = AppDatabase.getInstance(context)
 
     @Throws(IOException::class)
     fun downloadWeatherForecast() {
@@ -36,7 +35,6 @@ class Webservice(context: Context) {
     }
 
     private fun saveWeatherModels(weatherModels: List<Weather>) {
-        Log.w("WEBSERVICE", "saving data")
         WeatherDao.refreshWeatherByLocation(db.weatherDao(), LOCATION, weatherModels)
     }
 

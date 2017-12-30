@@ -4,21 +4,22 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import com.example.android.weatheralarmclock.AppDatabase
-
+import com.example.android.weatheralarmclock.util.Webservice
+import java.io.IOException
 
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var db: AppDatabase? = null
+    private var db: AppDatabase = AppDatabase.getInstance(this.getApplication())
 
-    var weatherList: LiveData<List<Weather>>? = null
+    var weatherList: LiveData<List<Weather>>
         private set
 
     init {
-        db = AppDatabase.getInstance(this.getApplication())
-        weatherList = db!!.weatherDao().loadWeatherByLocation("Cluj-Napoca")
+        weatherList = db.weatherDao().loadWeatherByLocation("Cluj-Napoca")
     }
 
-//    private fun subscribeToDbChanges() {
-//        weatherList = db.weatherDao().loadWeatherByLocation("Cluj-Napoca")
-//    }
+    @Throws(IOException::class)
+    fun syncWeather() {
+        Webservice(db!!).downloadWeatherForecast()
+    }
 }

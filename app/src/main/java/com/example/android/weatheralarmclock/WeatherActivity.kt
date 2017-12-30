@@ -8,14 +8,11 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.example.android.weatheralarmclock.model.Weather
 import com.example.android.weatheralarmclock.model.WeatherViewModel
-import com.example.android.weatheralarmclock.util.Webservice
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.activity_weather.*
-import java.io.IOException
 import com.jjoe64.graphview.DefaultLabelFormatter
-
-
+import kotlinx.android.synthetic.main.activity_weather.view.*
 
 
 class WeatherActivity : AppCompatActivity() {
@@ -30,12 +27,11 @@ class WeatherActivity : AppCompatActivity() {
 
         addWeatherObserver()
 
-        button_sync_weather_now.setOnClickListener { syncWeather() }
+        button_sync_weather_now.setOnClickListener { weatherViewModel.syncWeather() }
     }
 
     private fun addWeatherObserver() {
         weatherViewModel.weatherList!!.observe(this, Observer { weatherList ->
-            Log.w("OBSERVER", "Adding weather observer")
             if (weatherList != null) {
                 if (weatherList.isEmpty()) {
                     text_view_weather.text = getString(R.string.no_records)
@@ -86,11 +82,8 @@ class WeatherActivity : AppCompatActivity() {
             }
         }
 
+        // Reload graph
+        graph.removeAllSeries()
         graph.addSeries(series)
-    }
-
-    @Throws(IOException::class)
-    private fun syncWeather() {
-        Webservice(this.applicationContext).downloadWeatherForecast()
     }
 }
