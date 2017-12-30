@@ -1,4 +1,4 @@
-package com.example.android.weatheralarmclock
+package com.example.android.weatheralarmclock.adapters
 
 import android.app.Activity
 import android.app.Dialog
@@ -6,6 +6,7 @@ import android.app.TimePickerDialog
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.android.weatheralarmclock.R
 import com.example.android.weatheralarmclock.model.Alarm
 import com.example.android.weatheralarmclock.model.AlarmViewModel
 import com.example.android.weatheralarmclock.model.toTimeUnitString

@@ -1,4 +1,4 @@
-package com.example.android.weatheralarmclock
+package com.example.android.weatheralarmclock.activities
 
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
@@ -8,7 +8,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import com.example.android.weatheralarmclock.adapters.AlarmAdapter
+import com.example.android.weatheralarmclock.R
 import com.example.android.weatheralarmclock.account.AccountGeneral
 import com.example.android.weatheralarmclock.model.AlarmViewModel
 import kotlinx.android.synthetic.main.activity_list_alarms.*

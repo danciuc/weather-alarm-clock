@@ -21,18 +21,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ListAlarmsActivity">
+        <activity android:name=".activities.ListAlarmsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".WeatherActivity"
+            android:name=".activities.WeatherActivity"
             android:label="@string/weather_activity_title"
-            android:parentActivityName=".ListAlarmsActivity" />
+            android:parentActivityName=".activities.ListAlarmsActivity" />
 
         <provider
             android:name=".syncadapter.DummyProvider"
@@ -47,22 +46,22 @@
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-
         <service
             android:name=".syncadapter.SyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
-
     </application>
 
 </manifest>

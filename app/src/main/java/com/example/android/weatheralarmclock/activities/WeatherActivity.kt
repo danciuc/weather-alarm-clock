@@ -1,18 +1,17 @@
-package com.example.android.weatheralarmclock
+package com.example.android.weatheralarmclock.activities
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
+import com.example.android.weatheralarmclock.R
 import com.example.android.weatheralarmclock.model.Weather
 import com.example.android.weatheralarmclock.model.WeatherViewModel
 import com.jjoe64.graphview.series.BarGraphSeries
 import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.activity_weather.*
 import com.jjoe64.graphview.DefaultLabelFormatter
-import kotlinx.android.synthetic.main.activity_weather.view.*
 
 
 class WeatherActivity : AppCompatActivity() {
