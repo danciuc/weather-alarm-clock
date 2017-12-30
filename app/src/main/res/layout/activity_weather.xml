@@ -11,6 +11,7 @@
         android:id="@+id/button_sync_weather_now"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
         android:text="@string/sync_now" />
 
     <TextView
@@ -19,8 +20,8 @@
         android:layout_height="wrap_content" />
 
     <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/graph" />
+        android:layout_height="300dp" />
 
 </LinearLayout>

@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Weather Alarm Clock</string>
-    <string name="title_activity_set_alarm">SetAlarmActivity</string>
-    <string name="switch_alarm">Switch Alarm</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="label">Label</string>
@@ -13,4 +11,11 @@
     <string name="weather_activity_title">Weather Forecast</string>
     <string name="sync_now">Sync Now</string>
     <string name="no_records">No records</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="login_title">Login</string>
+    <string name="create_act">Create Account</string>
+    <string name="logout">Logout</string>
 </resources>

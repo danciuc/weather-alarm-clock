@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "844695192117",
+    "firebase_url": "https://weatheralarmclock-5864f.firebaseio.com",
+    "project_id": "weatheralarmclock-5864f",
+    "storage_bucket": "weatheralarmclock-5864f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844695192117:android:0224d93433e3b99c",
+        "android_client_info": {
+          "package_name": "com.example.android.weatheralarmclock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844695192117-bo1bm2km3ulr1dr3cahtcj823tqvpbst.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.weatheralarmclock",
+            "certificate_hash": "af45fc797caf2c03dc67b28a22ba813ffc2338b4"
+          }
+        },
+        {
+          "client_id": "844695192117-sulg277qcvrd4dmjb8kb5cq8jjn9s0d1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGQBvhaZAVHECNzEp1Gf8a5Ev-0WpQBhY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844695192117-sulg277qcvrd4dmjb8kb5cq8jjn9s0d1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
