@@ -15,7 +15,8 @@ import java.util.*
 class AlarmAdapter(
         private var alarms: List<Alarm>,
         private var activity: Activity,
-        private var alarmViewModel: AlarmViewModel
+        private var alarmViewModel: AlarmViewModel,
+        private val userHasWriteAccess: Boolean
 ) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -53,7 +54,12 @@ class AlarmAdapter(
         alarmSwitch.setOnClickListener { toggleAlarmActive(position) }
 
         // Handle remove alarm button
-        view.findViewById<Button>(R.id.button_delete_alarm).setOnClickListener { deleteAlarm(position) }
+        val buttonDeleteAlarm = view.findViewById<Button>(R.id.button_delete_alarm)
+        if (userHasWriteAccess) {
+            buttonDeleteAlarm.setOnClickListener { deleteAlarm(position) }
+        } else {
+            buttonDeleteAlarm.visibility = View.GONE
+        }
 
         return view
     }

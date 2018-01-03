@@ -13,7 +13,7 @@ import com.jjoe64.graphview.series.DataPoint
 import kotlinx.android.synthetic.main.activity_weather.*
 
 
-class WeatherActivity : BaseMenuActivity() {
+class WeatherActivity : BaseActivity() {
 
     private lateinit var weatherViewModel: WeatherViewModel
 

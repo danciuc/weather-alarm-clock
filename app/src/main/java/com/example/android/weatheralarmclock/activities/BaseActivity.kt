@@ -1,16 +1,14 @@
 package com.example.android.weatheralarmclock.activities
 
 import android.content.Intent
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.example.android.weatheralarmclock.R
 import com.google.firebase.auth.FirebaseAuth
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 
-
-
-open class BaseMenuActivity : AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)

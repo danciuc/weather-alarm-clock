@@ -1,19 +1,19 @@
 package com.example.android.weatheralarmclock.activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.android.weatheralarmclock.R
+import com.example.android.weatheralarmclock.util.FirebaseDbUtil
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
-import com.google.firebase.internal.FirebaseAppHelper.getUid
-import com.google.firebase.auth.FirebaseUser
-
-
 
 class LoginActivity : AppCompatActivity() {
 
@@ -81,7 +81,20 @@ class LoginActivity : AppCompatActivity() {
 
                         if (task.isSuccessful) {
                             Log.w(TAG, "login:success")
-                            updateUI()
+                            val currentUser = auth!!.currentUser
+                            val currentUserDb = FirebaseDbUtil.db.reference
+                                    .child("Users")
+                                    .child(currentUser!!.uid)
+
+                            currentUserDb.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot?) {
+                                    val role = snapshot!!.child("role").value as String?
+                                    val hasWriteAccess = (role != null && role == "admin")
+                                    updateUI(hasWriteAccess)
+                                }
+
+                                override fun onCancelled(error: DatabaseError?) {}
+                            })
                         } else {
                             Log.w(TAG, "login:failed", task.exception)
                             Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
@@ -92,8 +105,9 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUI() {
+    private fun updateUI(hasWriteAccess: Boolean) {
         val intent = Intent(this, ListAlarmsActivity::class.java)
+        intent.putExtra("hasWriteAccess", hasWriteAccess)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
         finish()

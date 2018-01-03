@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.example.android.weatheralarmclock.R
+import com.example.android.weatheralarmclock.util.FirebaseDbUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -36,7 +37,7 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun initialize() {
-        db = FirebaseDatabase.getInstance()
+        db = FirebaseDbUtil.db
         dbReference = db!!.reference.child("Users")
         auth = FirebaseAuth.getInstance()
 
