@@ -4,7 +4,7 @@ import android.accounts.Account
 import android.content.*
 import android.os.Bundle
 import android.util.Log
-import com.example.android.weatheralarmclock.AppDatabase
+import com.example.android.weatheralarmclock.util.AppDatabase
 import com.example.android.weatheralarmclock.account.AccountGeneral
 import com.example.android.weatheralarmclock.util.Webservice
 import java.io.IOException

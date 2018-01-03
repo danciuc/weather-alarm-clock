@@ -1,4 +1,4 @@
-package com.example.android.weatheralarmclock
+package com.example.android.weatheralarmclock.util
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room

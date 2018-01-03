@@ -1,12 +1,9 @@
 package com.example.android.weatheralarmclock.util
 
-import android.util.Log
-import com.example.android.weatheralarmclock.AppDatabase
 import com.example.android.weatheralarmclock.model.Weather
 import com.example.android.weatheralarmclock.model.WeatherDao
 import okhttp3.*
 import java.io.IOException
-import java.util.*
 
 
 class Webservice(private val db: AppDatabase) {

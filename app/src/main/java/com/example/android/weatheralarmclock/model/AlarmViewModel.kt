@@ -3,7 +3,7 @@ package com.example.android.weatheralarmclock.model
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import com.example.android.weatheralarmclock.AppDatabase
+import com.example.android.weatheralarmclock.util.AppDatabase
 
 class AlarmViewModel(application: Application) : AndroidViewModel(application) {
 
