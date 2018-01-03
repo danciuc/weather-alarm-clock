@@ -7,7 +7,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NotificationCompat
-import android.util.Log
 import android.view.View
 import com.example.android.weatheralarmclock.R
 import com.example.android.weatheralarmclock.account.AccountGeneral
