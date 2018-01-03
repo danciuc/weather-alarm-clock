@@ -1,8 +1,9 @@
-package com.example.android.weatheralarmclock.syncadapter
+package com.example.android.weatheralarmclock.services
 
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.example.android.weatheralarmclock.syncadapter.SyncAdapter
 
 
 class SyncService : Service() {

@@ -30,7 +30,7 @@
             android:syncable="true" />
 
         <service
-            android:name=".account.AuthenticatorService"
+            android:name=".services.AuthenticatorService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -42,7 +42,7 @@
         </service>
 
         <service
-            android:name=".syncadapter.SyncService"
+            android:name=".services.SyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -51,6 +51,16 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
+        </service>
+
+        <service
+            android:name=".services.FirebaseNotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent" />
         </service>
 
         <activity android:name=".activities.LoginActivity">
